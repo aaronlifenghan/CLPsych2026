@@ -1,0 +1,14 @@
+default_provider: "ollama"
+
+providers:
+  ollama:
+    base_url: "http://localhost:11434"
+    model_name: "llama3.1"
+    options:
+      num_ctx: 32768
+      temperature: 0.3
+      top_k: 40
+      top_p: 0.9
+  openai:
+    api_key: "${OPENAI_API_KEY}"
+    model_name: "gpt-4"
