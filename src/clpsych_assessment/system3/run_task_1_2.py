@@ -21,19 +21,29 @@ def main():
         description="Task 1.2: Presence Rating"
     )
     parser.add_argument(
-        "input",
+        "-i",
+        "--input",
         help="Path to a timeline JSON file or directory of timeline files",
     )
     parser.add_argument(
+        "-w",
         "--context-window",
         type=int,
         default=5,
         help="Number of preceding posts for context (default: 5)",
     )
     parser.add_argument(
+        "-c",
         "--config", default=None, help="Path to config.yaml"
     )
     parser.add_argument(
+       "-p",
+       "--prompt_name",
+       default="prompt_presence",
+       help="Name of the prompt file"
+    )
+    parser.add_argument(
+        "-o",
         "--output",
         default="results_task_1_2.json",
         help="Output file path (default: results_task_1_2.json)",
@@ -42,7 +52,7 @@ def main():
 
     pipeline = CLPsychPipeline(
         response_model=PresenceRatingResponse,
-        prompt_name="prompt_presence",
+        prompt_name=args.prompt_name,
         config_path=args.config,
     )
 

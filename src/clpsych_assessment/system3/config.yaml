@@ -3,7 +3,7 @@ default_provider: "ollama"
 providers:
   ollama:
     base_url: "http://localhost:11434"
-    model_name: "llama3.1"
+    model_name: "llama3.1:8b"
     options:
       num_ctx: 32768
       temperature: 0.3
