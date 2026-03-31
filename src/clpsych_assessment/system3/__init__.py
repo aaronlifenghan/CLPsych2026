@@ -1,5 +1,5 @@
 """
-CLPsych 2026 Shared Task
+CLPsych 2026 Shared Task — System 3: LLM Prompting
 
 Task 1.1: ABCD Element & Subelement Classification
 Task 1.2: Presence Rating
@@ -15,6 +15,7 @@ from .structured_output import (
     SelfStateClassification,
     SelfStatePresence,
 )
+from .chain import MODELS, list_available_models
 
 __all__ = [
     "CLPsychPipeline",
@@ -24,4 +25,6 @@ __all__ = [
     "PresenceRatingResponse",
     "SelfStatePresence",
     "MomentsOfChangeResponse",
+    "MODELS",
+    "list_available_models",
 ]
