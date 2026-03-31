@@ -109,8 +109,8 @@ MODELS: dict[str, dict] = {
 def get_ollama_model(
     model_name: str,
     base_url: str = "http://localhost:11434",
-    format: JsonSchemaValue | Literal["", "json"] = "",
-    options: dict | None = None,
+    format: Optional[JsonSchemaValue] = "",
+    options: Optional[dict] = None,
 ):
     """Create a LangChain ChatOllama model."""
     from langchain_ollama import ChatOllama
@@ -132,8 +132,8 @@ def get_openai_model(
     model_name: str,
     api_key: str = "",
     base_url: str = "",
-    format: JsonSchemaValue | None = None,
-    options: dict | None = None,
+    format: Optional[JsonSchemaValue] = None,
+    options: Optional[dict] = None,
 ):
     """Create a LangChain ChatOpenAI model."""
     from langchain_openai import ChatOpenAI
@@ -154,8 +154,8 @@ def get_openai_model(
 def get_google_model(
     model_name: str,
     api_key: str = "",
-    format: JsonSchemaValue | None = None,
-    options: dict | None = None,
+    format: Optional[JsonSchemaValue] = None,
+    options: Optional[dict] = None,
 ):
     """
     Create a LangChain ChatGoogleGenerativeAI model.
@@ -277,8 +277,8 @@ def get_model(
     model_name: Optional[str] = None,
     base_url: Optional[str] = None,
     api_key: str = "",
-    format: JsonSchemaValue | Literal["", "json"] = "",
-    options: dict | None = None,
+    format: Optional[JsonSchemaValue] = "",
+    options: Optional[dict] = None,
 ):
     """Get a LangChain model. Returns None for HF backends."""
     if provider == "ollama":
