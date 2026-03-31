@@ -13,9 +13,6 @@ providers:
       temperature: 0.0
       top_k: 40
       top_p: 0.9
-  openai:
-    api_key: "${OPENAI_API_KEY}"
-    model_name: "gpt-4o-mini"
   google:
     api_key: "${GOOGLE_API_KEY}"
     model_name: "gemini-2.0-flash"

@@ -92,7 +92,54 @@ system3/
 ### Data Split
 
 ```bash
+<<<<<<< HEAD
 python -m clpsych_assessment.system3.data_split data/train_tasks12/ --output-dir data/split --train-ratio 0.6
+=======
+# Single timeline
+uv run python -m clpsych_assessment.system3.run_task_1_1 --input data/train_tasks12/0cac13e357.json --output 0cac13e357.json
+uv run python -m clpsych_assessment.system3.run_task_1_2 --input data/train_tasks12/0cac13e357.json --output 0cac13e357.json
+uv run python -m clpsych_assessment.system3.run_task_2   --input data/train_tasks12/0cac13e357.json --output 0cac13e357.json
+
+# Entire dataset directory
+uv run python -m clpsych_assessment.system3.run_task_1_1 --input data/test_tasks12nolabels/ --output results_1_1.json
+uv run python -m clpsych_assessment.system3.run_task_1_2 --input data/test_tasks12nolabels/ --output results_1_2.json
+uv run python -m clpsych_assessment.system3.run_task_2   --input data/test_tasks12nolabels/ --output results_2.json
+```
+
+Shorter version with prompt name:
+```bash
+# Single timeline
+uv run python -m clpsych_assessment.system3.run_task_1_1 \
+    -i data/train_tasks12/0cac13e357.json \
+    -p prompt_abcd_fewshot \
+    -o 0cac13e357.json
+
+uv run python -m clpsych_assessment.system3.run_task_1_2 \
+    -i data/train_tasks12/0cac13e357.json \
+    -p prompt_change_fewshot \
+    -o 0cac13e357.json
+
+uv run python -m clpsych_assessment.system3.run_task_2 \
+    -i data/train_tasks12/0cac13e357.json \
+    -p prompt_presence_fewshot \
+    -o 0cac13e357.json
+
+# Entire dataset directory
+uv run python -m clpsych_assessment.system3.run_task_1_1 \
+    -i data/test_tasks12nolabels/ \
+    -p prompt_abcd_fewshot \
+    -o fewshot_results_1_1.json
+
+uv run python -m clpsych_assessment.system3.run_task_1_2 \
+    -i data/test_tasks12nolabels/ \
+    -p prompt_change_fewshot \
+    -o fewshot_results_1_2.json
+
+uv run python -m clpsych_assessment.system3.run_task_2 \
+    -i data/test_tasks12nolabels/ \
+    -p prompt_presence_fewshot \
+    -o fewshot_results_2.json
+>>>>>>> origin/main
 ```
 
 Produces `data/split/train/` and `data/split/test/` with stratified assignment
