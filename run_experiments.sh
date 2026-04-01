@@ -72,10 +72,11 @@ run_model_prompt() {
         -o "$model_out/raw_task_2.json" $extra_args 2>&1 | tail -3 || \
         echo "  WARN: Task 2 failed"
 
-    # Convert to submission format (task1.1 output covers both task1 and task2)
+    # Convert to submission format
     echo "  [Format] Converting to submission format..."
     python -m clpsych_assessment.system3.format_submission \
         "$model_out/raw_task_1_1.json" \
+        --task2 "$model_out/raw_task_2.json" \
         --output-dir "$model_out/submission" 2>&1 | tail -3 || true
 
     echo "  Done → $model_out/"

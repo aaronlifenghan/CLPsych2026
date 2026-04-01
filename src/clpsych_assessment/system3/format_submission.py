@@ -136,14 +136,16 @@ def _resolve_subelement(
 
 def convert_to_task1_submission(
     pipeline_output: list[dict],
+    presence_ratings: Optional[dict] = None,
 ) -> list[dict]:
     """
     Convert pipeline predictions to task1_pred.json format.
 
-    Input: list of timeline dicts from the pipeline, each with:
-        {"timeline_id": ..., "assessments": [{post_id, adaptive_state, ...}, ...]}
-      OR the format from run_pipeline.py (my-version):
-        [{"timeline_id": ..., "posts": [{"post_id": ..., "evidence": {...}}, ...]}]
+    Args:
+        pipeline_output:  List of timeline dicts from run_task_1_1.
+        presence_ratings: Optional {post_id: {"adaptive": int, "maladaptive": int}}
+                          from run_task_1_2 output. If provided, uses model-predicted
+                          presence ratings instead of estimating from element count.
 
     Output: flat list matching §9 Task 1 submission format.
     """
@@ -151,8 +153,6 @@ def convert_to_task1_submission(
 
     for tl in pipeline_output:
         timeline_id = tl["timeline_id"]
-
-        # Support both pipeline output formats
         posts = tl.get("assessments") or tl.get("posts", [])
 
         for post in posts:
@@ -162,18 +162,13 @@ def convert_to_task1_submission(
                 "post_id": post_id,
             }
 
-            # Handle system3 format (from CLPsychPipeline)
-            if "adaptive_state" in post or "maladaptive_state" in post:
-                entry.update(
-                    _convert_system3_post_task1(post)
-                )
-            # Handle my-version format (evidence-based)
-            elif "evidence" in post:
-                entry.update(
-                    _convert_evidence_post_task1(post)
-                )
+            post_presence = presence_ratings.get(post_id, {}) if presence_ratings else {}
 
-            # Only include if at least one state has content
+            if "adaptive_state" in post or "maladaptive_state" in post:
+                entry.update(_convert_system3_post_task1(post, post_presence))
+            elif "evidence" in post:
+                entry.update(_convert_evidence_post_task1(post))
+
             has_adaptive = "adaptive-state" in entry and entry["adaptive-state"]
             has_maladaptive = "maladaptive-state" in entry and entry["maladaptive-state"]
             if has_adaptive or has_maladaptive:
@@ -182,9 +177,14 @@ def convert_to_task1_submission(
     return entries
 
 
-def _convert_system3_post_task1(post: dict) -> dict:
-    """Convert a system3 pipeline post (Pydantic-dumped) to task1 format."""
+def _convert_system3_post_task1(post: dict, post_presence: Optional[dict] = None) -> dict:
+    """Convert a system3 pipeline post (Pydantic-dumped) to task1 format.
+
+    post_presence: {"adaptive": int, "maladaptive": int} from run_task_1_2 output.
+                   If provided, uses model-predicted ratings instead of estimating.
+    """
     result = {}
+    post_presence = post_presence or {}
 
     for valence_key, state_key in [
         ("adaptive-state", "adaptive_state"),
@@ -194,7 +194,7 @@ def _convert_system3_post_task1(post: dict) -> dict:
         if not state:
             continue
 
-        valence = "adaptive" if "adaptive" in valence_key else "maladaptive"
+        valence_short = "adaptive" if "adaptive" in valence_key else "maladaptive"
         elements = state.get("elements", [])
 
         # Filter to present elements (subelement != 0)
@@ -203,9 +203,12 @@ def _convert_system3_post_task1(post: dict) -> dict:
             continue
 
         state_out = {}
-        # Presence: count present elements -> estimate, or use from data
-        # For now estimate from element count
-        state_out["Presence"] = min(5, max(1, len(present) + 1))
+
+        # Use model-predicted presence rating if available, else estimate
+        if valence_short in post_presence and post_presence[valence_short] is not None:
+            state_out["Presence"] = int(post_presence[valence_short])
+        else:
+            state_out["Presence"] = min(5, max(1, len(present) + 1))
 
         for elem in present:
             element_name = elem["element"]
@@ -306,20 +309,23 @@ def write_submission(
     output_dir: str,
     task1: bool = True,
     task2: bool = True,
+    presence_ratings: Optional[dict] = None,
 ):
     """
     Write task1_pred.json and task2_pred.json to output_dir.
 
     Args:
-        pipeline_output: Pipeline results (list of timeline dicts).
-        output_dir: Directory to write submission files.
-        task1: Whether to write task1_pred.json.
-        task2: Whether to write task2_pred.json.
+        pipeline_output:  Pipeline results (list of timeline dicts).
+        output_dir:       Directory to write submission files.
+        task1:            Whether to write task1_pred.json.
+        task2:            Whether to write task2_pred.json.
+        presence_ratings: Optional {post_id: {"adaptive": int, "maladaptive": int}}
+                          from run_task_1_2, for accurate presence ratings in task1.
     """
     os.makedirs(output_dir, exist_ok=True)
 
     if task1:
-        t1 = convert_to_task1_submission(pipeline_output)
+        t1 = convert_to_task1_submission(pipeline_output, presence_ratings=presence_ratings)
         path = os.path.join(output_dir, "task1_pred.json")
         with open(path, "w") as f:
             json.dump(t1, f, indent=2)
@@ -345,7 +351,15 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Convert pipeline output to shared task submission format"
     )
-    parser.add_argument("input", help="Pipeline output JSON file")
+    parser.add_argument("input", help="Task 1.1 pipeline output JSON (ABCD classification)")
+    parser.add_argument(
+        "--task1-2", default=None,
+        help="Task 1.2 pipeline output JSON (Presence rating). Used for accurate presence ratings.",
+    )
+    parser.add_argument(
+        "--task2", default=None,
+        help="Task 2 pipeline output JSON (Switch/Escalation).",
+    )
     parser.add_argument(
         "--output-dir", default="submission",
         help="Directory for submission files (default: submission/)",
@@ -353,10 +367,39 @@ if __name__ == "__main__":
     args = parser.parse_args()
 
     with open(args.input) as f:
-        data = json.load(f)
+        task1_data = json.load(f)
+    if not isinstance(task1_data, list):
+        task1_data = [task1_data]
 
-    if not isinstance(data, list):
-        data = [data]
+    # Build presence ratings lookup from task1.2 output if provided
+    presence_ratings = {}
+    if args.task1_2:
+        with open(args.task1_2) as f:
+            t12_data = json.load(f)
+        if not isinstance(t12_data, list):
+            t12_data = [t12_data]
+        for tl in t12_data:
+            for post in tl.get("assessments", []):
+                pid = post.get("post_id", "")
+                ada = post.get("adaptive_state", {}) or {}
+                mal = post.get("maladaptive_state", {}) or {}
+                presence_ratings[pid] = {
+                    "adaptive":    ada.get("presence_rating"),
+                    "maladaptive": mal.get("presence_rating"),
+                }
 
-    write_submission(data, args.output_dir)
+    # Write task1 pred
+    write_submission(task1_data, args.output_dir, task1=True, task2=False,
+                     presence_ratings=presence_ratings if presence_ratings else None)
+
+    # Write task2 pred
+    if args.task2:
+        with open(args.task2) as f:
+            task2_data = json.load(f)
+        if not isinstance(task2_data, list):
+            task2_data = [task2_data]
+    else:
+        task2_data = task1_data
+
+    write_submission(task2_data, args.output_dir, task1=False, task2=True)
     print(f"\nSubmission files written to {args.output_dir}/")

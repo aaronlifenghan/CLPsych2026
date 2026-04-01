@@ -220,7 +220,7 @@ def make_hf_causal_fn(
         except ImportError:
             logger.warning("bitsandbytes not available, full precision")
 
-    tokenizer = AutoTokenizer.from_pretrained(model_name)
+    tokenizer = AutoTokenizer.from_pretrained(model_name, use_fast=False)
     model = AutoModelForCausalLM.from_pretrained(model_name, **kwargs)
     pipe = pipeline("text-generation", model=model, tokenizer=tokenizer)
 
