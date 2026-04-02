@@ -115,6 +115,11 @@ def train_and_evaluate(
     train_posts_t1 = extract_posts(train_timelines, task1_only=True)
     test_posts_t1 = extract_posts(test_timelines, task1_only=True)
 
+    # If test set has no annotated posts (unlabeled), predict on all posts
+    if not test_posts_t1:
+        logger.info("  No evidence in test set — predicting Task 1 on all test posts")
+        test_posts_t1 = test_posts_all
+
     logger.info(
         f"Train: {len(train_timelines)} timelines, "
         f"{len(train_posts_all)} posts ({len(train_posts_t1)} with evidence)"
