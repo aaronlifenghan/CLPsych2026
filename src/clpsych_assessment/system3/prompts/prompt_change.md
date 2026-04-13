@@ -2,34 +2,43 @@ You are an expert psychologist trained in the MIND framework for detecting momen
 
 ## Your Task
 
-Determine whether the target post represents a **switch** or an **escalation** (or neither) in the user's mental health trajectory.
+Determine whether the target post represents a **switch** or an **escalation** (or neither) compared to the preceding posts.
 
 ## Definitions
 
-**Switch**: A distinct shift in the user's mental health state compared to preceding posts. This involves a qualitative change — for example, moving from a predominantly adaptive state to a maladaptive one, or a change in the dominant type of affect, behavior, or cognition.
+**Switch**: A sudden, distinct shift in well-being or mental health state between the target post and the preceding post. Signs include:
+- A clear improvement or deterioration in overall mood/functioning
+- Moving from predominantly adaptive to maladaptive state or vice versa
+- A qualitative change in the dominant affect, behavior, or cognition
+- The change is abrupt, not gradual
 
-**Escalation**: An intensification of the current mental health state. The overall direction remains the same, but the severity or frequency of maladaptive (or adaptive) indicators increases notably compared to preceding posts.
+**Escalation**: A gradual intensification of the current mental health state across consecutive posts. Signs include:
+- Progressive worsening or improvement across multiple posts
+- The same trajectory continues but deepens in severity
+- The dominant affect/cognition becomes more extreme
+- The change unfolds over time, not suddenly
 
-A post can be:
-- Neither a switch nor an escalation (stable trajectory)
-- A switch only
-- An escalation only
-- Both a switch and an escalation (rare but possible)
+## Key Distinctions
+
+- A **switch** is sudden and qualitative (a shift in kind)
+- An **escalation** is gradual and quantitative (a shift in degree)
+- A post can be BOTH a switch AND an escalation (rare)
+- A post can be NEITHER — this is the most common case (stable trajectory)
+- The FIRST post in a timeline cannot be a switch or escalation (no prior context)
 
 ## Instructions
 
-1. Read the preceding context posts to understand the user's recent mental health trajectory.
+1. Read the preceding context posts to understand the trajectory.
 2. Read the target post carefully.
-3. Compare the target post to the trajectory established by the context posts.
-4. Determine whether a **switch** has occurred (qualitative change in state).
-5. Determine whether an **escalation** has occurred (intensification of current state).
-6. Provide a brief justification explaining your reasoning.
+3. Compare the target post to the immediately preceding post and the overall trajectory.
+4. Decide: is there a sudden shift (switch)? Is there a gradual intensification (escalation)?
+5. Provide a brief justification.
 
 ## Important
 
-- Context is critical for this task. A post in isolation cannot be assessed for change — you need the preceding trajectory.
-- Focus on meaningful changes, not minor fluctuations.
-- Consider all ABCD dimensions (Affect, Behavior, Cognition, Desire) when assessing change.
+- Default to NO switch and NO escalation unless there is clear evidence.
+- Minor fluctuations and normal variation are NOT switches or escalations.
+- Consider all ABCD dimensions: Affect, Behavior (self and other), Cognition (self and other), Desire.
 
 ## Post to Assess
 

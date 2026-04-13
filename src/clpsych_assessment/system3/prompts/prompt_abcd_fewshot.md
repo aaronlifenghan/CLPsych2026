@@ -4,11 +4,11 @@ You are an expert psychologist trained in the MIND framework for analyzing menta
 
 Classify the ABCD elements and subelements for adaptive and maladaptive self-states in the given social media post.
 
-For each self-state (adaptive and maladaptive), classify the 6 elements (A, B-O, B-S, C-O, C-S, D). If an element is not present, assign subelement label 0. Only include elements that are present (non-zero) in your response.
+You MUST classify all 6 elements for each self-state. If an element is not present, assign subelement 0. Always return exactly 6 elements per self-state.
 
 ## The MIND Framework: ABCD Elements and Subelements
 
-Adaptive subelements use odd numbers, maladaptive use even numbers.
+Adaptive subelements use odd numbers. Maladaptive subelements use even numbers.
 
 ### Affect (A)
 - 0 = Absent
@@ -40,6 +40,13 @@ Adaptive subelements use odd numbers, maladaptive use even numbers.
 - Adaptive: (1) Relatedness, (3) Autonomy and adaptive control, (5) Competence/self esteem/self-care
 - Maladaptive: (2) Expectation that relatedness needs will not be met, (4) Expectation that autonomy needs will not be met, (6) Expectation that competence needs will not be met
 
+## Critical Rules
+
+- You MUST always list all 6 elements (A, B-O, B-S, C-O, C-S, D) for each self-state, even if absent (subelement=0).
+- Adaptive and maladaptive are separate — a post can have BOTH an adaptive A and a maladaptive A.
+- If multiple subelements of the same valence seem present for one element, pick the single most dominant one.
+- If a self-state is entirely absent (all 6 elements are 0), omit that self-state entirely.
+
 ## Examples
 
 ### Example 1
@@ -47,47 +54,70 @@ Adaptive subelements use odd numbers, maladaptive use even numbers.
 Post: "I think I need to work on my self esteem... So I went on a date recently and I actually, for the first time in a couple years, had a really great time. I was relaxed, I was myself and we seemed to hit it off pretty well, I thought. I sent him a text after he dropped me off saying that I had a good time and that I really wanted to hang out with him again when he was free. He didn't really respond and now I'm doubting myself thinking I already messed something up. He could've been busy with work or something but my anxiety is telling me that I'm annoying him and that I should stop thinking about that second date. My roommates and friends say I should just relax. Idk... how do I help better myself whenever I feel this way?"
 
 Classification:
-- **Adaptive self-state:**
-  - B-S: subelement 1 (Self care and improvement) — evidence: "So I went on a date recently and I actually, for the first time in a couple years, had a really great time."
-  - B-O: subelement 1 (Relating behavior) — evidence: "I sent him a text after he dropped me off saying that I had a good time and that I really wanted to hang out with him again when he was free."
-  - D: subelement 5 (Competence, self esteem, self-care) — evidence: "how do I help better myself whenever I feel this way?"
-- **Maladaptive self-state:**
-  - A: subelement 2 (Anxious/fearful/tense) — evidence: "my anxiety is telling me that I'm annoying him and that I should stop thinking about that second date."
-  - C-S: subelement 2 (Self criticism) — evidence: "I'm doubting myself thinking I already messed something up."
+- **Adaptive self-state** (6 elements required):
+  - A: subelement 0 (absent)
+  - B-O: subelement 1 (Relating behavior) — evidence: "I sent him a text after he dropped me off"
+  - B-S: subelement 1 (Self care and improvement) — evidence: "how do I help better myself whenever I feel this way?"
+  - C-O: subelement 0 (absent)
+  - C-S: subelement 0 (absent)
+  - D: subelement 5 (Competence, self esteem, self-care) — evidence: "I think I need to work on my self esteem"
+
+- **Maladaptive self-state** (6 elements required):
+  - A: subelement 2 (Anxious/fearful/tense) — evidence: "my anxiety is telling me that I'm annoying him"
+  - B-O: subelement 0 (absent)
+  - B-S: subelement 0 (absent)
+  - C-O: subelement 0 (absent)
+  - C-S: subelement 2 (Self criticism) — evidence: "I'm doubting myself thinking I already messed something up"
+  - D: subelement 0 (absent)
 
 ### Example 2
 
-Post: "I should probably tell my therapist I've had thoughts of hurting myself Rough week. Rough life, whatever. I feel like I have nothing and no one to bring happiness to my life. Hell, I work at the fucking *happiest place on earth* and I still can't get out of bed and take my pills at a decent time. Some people might think, 'Oh, but you're at the theme park of everyone's dreams! You have loving friends and family and a start of a promising career! You shouldn't be sad. People out there have it worse!' I haven't reached the point of actually hurting myself but one failed relationship has almost brought me to that point. I'm not going to be good enough for anyone. People will use me, my parents will be disappointed in me, I haven't got the money to live on my own anywhere. I couldn't even afford to feed myself some days! How in the hell am I supposed to live in a world that wants lower class citizens like me to fail?"
+Post: "I should probably tell my therapist I've had thoughts of hurting myself. Rough week. I feel like I have nothing and no one to bring happiness to my life. I haven't reached the point of actually hurting myself but one failed relationship has almost brought me to that point. I'm not going to be good enough for anyone."
 
 Classification:
-- **Adaptive self-state:**
-  - C-O: subelement 1 (Perception of the other as related) — evidence: "I should probably tell my therapist I've had thoughts of hurting myself"
-- **Maladaptive self-state:**
-  - A: subelement 4 (Depressed/despair/hopeless) — evidence: "I feel like I have nothing and no one to bring happiness to my life."
-  - B-S: subelement 2 (Self harm, neglect and avoidance) — evidence: "I still can't get out of bed and take my pills at a decent time."
-  - C-S: subelement 2 (Self criticism) — evidence: "How in the hell am I supposed to live in a world that wants lower class citizens like me to fail?"
-  - C-O: subelement 2 (Perception of the other as detached or over attached) — evidence: "People will use me, my parents will be disappointed in me"
-  - D: subelement 2 (Expectation that relatedness needs will not be met) — evidence: "I'm not going to be good enough for anyone. People will use me, my parents will be disappointed in me,"
+- **Adaptive self-state** (6 elements required):
+  - A: subelement 0 (absent)
+  - B-O: subelement 1 (Relating behavior) — evidence: "I should probably tell my therapist"
+  - B-S: subelement 0 (absent)
+  - C-O: subelement 0 (absent)
+  - C-S: subelement 0 (absent)
+  - D: subelement 0 (absent)
+
+- **Maladaptive self-state** (6 elements required):
+  - A: subelement 4 (Depressed/despair/hopeless) — evidence: "I feel like I have nothing and no one to bring happiness to my life"
+  - B-O: subelement 0 (absent)
+  - B-S: subelement 2 (Self harm, neglect and avoidance) — evidence: "thoughts of hurting myself"
+  - C-O: subelement 2 (Perception of the other as detached) — evidence: "I feel like I have nothing and no one"
+  - C-S: subelement 2 (Self criticism) — evidence: "I'm not going to be good enough for anyone"
+  - D: subelement 2 (Expectation that relatedness needs will not be met) — evidence: "I'm not going to be good enough for anyone"
 
 ### Example 3
 
-Post: "[HELP!] Calling All Animal Fosters from around the Orange County area! I am in desperate need of some help right now. I have recently found a bundle of 7 or so kittens hanging around a dangerous abandoned lot with ages ranging from 2 to 7 months. Since finding them, I have started to feed and water them in the hopes that one of them will trust me enough to get close to me. My initial plan was TNR but, due to the fact that they're young, I want them to have a better future in a home with a loving family. I unfortunately cannot be that person since the place I live in right now does not allow animals and I am not staying in California forever. I've tried contacting different TNR and foster programs for some help or assistance during the matter but most places are already full or have too many projects to take care of. I'm a poor college girl but I want to try my best to get these cats a better life out of that lot... Would anyone be willing to help me or give me some advice on what to do? I'm desperate."
+Post: "[HELP!] Calling All Animal Fosters! I have recently found a bundle of 7 kittens. I want them to have a better future in a home with a loving family. I unfortunately cannot be that person since I am not staying in California forever. I'm a poor college girl but I want to try my best to get these cats a better life. Would anyone be willing to help me?"
 
 Classification:
-- **Adaptive self-state:**
-  - A: subelement 5 (Content/happy/joy/hopeful) — evidence: "hopes that one of them will trust me enough to get close to me"
-  - B-O: subelement 1 (Relating behavior) — evidence: "I've tried contacting different TNR and foster programs for some help or assistance"
-  - C-S: subelement 1 (Self-acceptance and compassion) — evidence: "I'm a poor college girl but I want to try my best to get these cats a better life out of that lot."
-  - D: subelement 3 (Autonomy and adaptive control) — evidence: "Would anyone be willing to help me or give me some advice on what to do?"
-- **Maladaptive self-state:**
-  - A: subelement 2 (Anxious/fearful/tense) — evidence: "I am in desperate need of some help right now."
+- **Adaptive self-state** (6 elements required):
+  - A: subelement 5 (Content/happy/hopeful) — evidence: "hopes that one of them will trust me enough"
+  - B-O: subelement 1 (Relating behavior) — evidence: "Would anyone be willing to help me?"
+  - B-S: subelement 0 (absent)
+  - C-O: subelement 0 (absent)
+  - C-S: subelement 1 (Self-acceptance and compassion) — evidence: "I'm a poor college girl but I want to try my best"
+  - D: subelement 3 (Autonomy and adaptive control) — evidence: "Would anyone be willing to help me or give me some advice?"
+
+- **Maladaptive self-state** (6 elements required):
+  - A: subelement 2 (Anxious/fearful/tense) — evidence: "I am in desperate need of some help right now"
+  - B-O: subelement 0 (absent)
+  - B-S: subelement 0 (absent)
+  - C-O: subelement 0 (absent)
+  - C-S: subelement 0 (absent)
+  - D: subelement 0 (absent)
 
 ## Instructions
 
 1. Read the post carefully (and any preceding context posts if provided).
-2. For the **adaptive self-state**: identify which ABCD elements are present and assign the correct subelement number. Provide text evidence for each.
-3. For the **maladaptive self-state**: do the same.
-4. If a self-state is entirely absent (no elements detected), omit it from your response.
+2. For the **adaptive self-state**: classify ALL 6 elements. Use 0 if absent. Provide evidence for non-zero.
+3. For the **maladaptive self-state**: classify ALL 6 elements. Use 0 if absent. Provide evidence for non-zero.
+4. Omit a self-state only if ALL 6 of its elements are 0.
 
 ## Post to Assess
 
