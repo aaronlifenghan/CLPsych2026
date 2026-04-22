@@ -1,0 +1,28 @@
+# CLPsych 2026 — System 5 — Task 3.1 Configuration
+# Model selection is done via --model CLI flag.
+# This file provides fallback defaults only.
+
+default_provider: "ollama"
+
+providers:
+  ollama:
+    base_url: "http://localhost:11434"
+    options:
+      num_ctx: 32768
+      temperature: 0.2
+      top_k: 40
+      top_p: 0.9
+
+# Prompt strategies available for ablation:
+#   zero_shot_direct   - post text only, direct summary
+#   zero_shot_cot      - post text only, chain-of-thought then summary
+#   few_shot_direct    - 2 gold examples prepended, direct output
+#   few_shot_cot       - 2 gold examples prepended, CoT then summary
+#   baseline2_style    - enriched: full ABCD labels + presence + switch/escalation per post
+
+few_shot:
+  n_examples: 2       # number of gold training examples to prepend
+  selection: diverse  # diverse = one Switch + one Escalation example
+
+summary:
+  word_limit: 350
