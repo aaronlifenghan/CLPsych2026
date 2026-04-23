@@ -1,0 +1,63 @@
+# CLPsych 2026 — System 6 — RAG-enhanced Task 3.1 Configuration
+
+default_provider: "ollama"
+
+providers:
+  ollama:
+    base_url: "http://localhost:11434"
+    options:
+      num_ctx: 32768
+      temperature: 0.2
+      top_k: 40
+      top_p: 0.9
+
+# ── RAG Configuration ────────────────────────────────────────────
+
+rag:
+  # Embedding backend: 'auto' tries sentence-transformers, falls back to tfidf
+  embedding_backend: "auto"
+
+  # Number of examples to retrieve per query
+  top_k: 3
+
+  # Retrieval strategy: 'semantic', 'filtered', 'hybrid', 'diverse'
+  #   semantic:  pure cosine similarity
+  #   filtered:  cosine + hard filter by change_type (needs change_type in query)
+  #   hybrid:    cosine + soft boost for matching change_type
+  #   diverse:   hybrid + diversity penalty for same-timeline retrievals
+  retrieval_strategy: "hybrid"
+
+  # Boost score for matching change_type (hybrid/diverse strategies)
+  change_type_boost: 0.15
+
+  # Diversity penalty for same-timeline retrievals
+  diversity_penalty: 0.3
+
+  # Whether to include sliding-window post groups from Task 1+2 timelines
+  # (only sequence entries have gold summaries; post groups add context)
+  include_post_groups: false
+
+  # Whether to use ABCD-enriched clinical text for embeddings
+  use_clinical_text: true
+
+  # Whether to include full post text in retrieved examples
+  # false = summary-only (saves context window)
+  include_posts_in_examples: true
+
+  # Only retrieve sequence entries (with gold summaries)
+  sequence_only: true
+
+  # Path to cache the built index (set to null to rebuild each time)
+  index_cache_path: "outputs/system6/rag_index.pkl"
+
+# ── Prompt strategies ────────────────────────────────────────────
+# Each maps to a prompt template in prompts/ directory.
+# The template must contain {rag_examples_block} and {sequence_text} placeholders.
+
+strategies:
+  - rag_few_shot_direct
+  - rag_baseline2_style
+  - rag_colleague_style
+
+summary:
+  word_limit: 350
