@@ -22,7 +22,7 @@ python -m clpsych_assessment.system3.format_submission results_1_1.json --output
 ./run_experiments.sh "llama3.1 gemma2:9b qwen2.5:7b"
 ```
 
-### Available Models
+### Available Models (the API-access models were not used for this task)
 
 | Key                | Backend    | Description                                      |
 | ------------------ | ---------- | ------------------------------------------------ |
