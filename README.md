@@ -16,5 +16,5 @@ Resources to be shared here for our attending of the shared task
       eprint={2605.23052},
       archivePrefix={arXiv},
       primaryClass={cs.CL},
-      url={https://arxiv.org/abs/2605.23052}, 
+      url={ https://arxiv.org/abs/2605.23052 }, 
 }
